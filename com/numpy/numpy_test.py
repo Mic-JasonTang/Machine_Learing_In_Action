@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2017/9/19 22:12
+# @Author  : Jasontang
+# @Site    :
+# @File    : e.py
+# @ToDo    :
+
 from numpy import *
 
 a = random.rand(4, 4)
