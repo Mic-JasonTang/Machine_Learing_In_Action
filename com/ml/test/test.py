@@ -6,6 +6,8 @@
 # @File    : test.py
 # @ToDo    : 测试 kNN.py
 
+import os
+import numpy as np
 import com.ml.kNN as kNN
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -32,11 +34,35 @@ def testCreateDataSet(show = False):
 		plt.show()
 	return group, labels
 
-def testClassify0(dataSet, labels):
-	return kNN.classify0([0, 0], dataSet, labels, 3)
+def testClassify0(inX, dataSet, labels):
+	return kNN.classify0(inX, dataSet, labels, 3)
 
+
+def testfile2matrix():
+	datingDataMat, datingLabels = kNN.file2matrix(r'../datingTestSet2.txt')
+	# print datingDataMat
+	# print datingLabels
+	# plt.figure(figsize=(6,10))
+	# plt.subplot(211)
+	# plt.scatter(datingDataMat[:, 0], datingDataMat[:, 1], 50.0* np.array(datingLabels), np.array(datingLabels))
+	# plt.xlabel(u'玩视频游戏所耗时间百分比')
+	# plt.ylabel(u'每周消费的冰激淋公升数')
+	# plt.subplot(212)
+	# plt.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 50.0* np.array(datingLabels), np.array(datingLabels))
+	# plt.xlabel(u'每年获取的飞行常客里程数')
+	# plt.ylabel(u'玩视频游戏所耗时间百分比')
+	# plt.show()
+	return datingDataMat, datingLabels
 
 if __name__ == '__main__':
-	group, labels = testCreateDataSet()
-	print testClassify0(group, labels)
-
+	# group, labels = testCreateDataSet(True)
+	# inX = list(input("输入数据："))
+	# print "属于:", testClassify0(inX, group, labels)
+	# print os.getcwd()
+	# datingDataMat, datingLabels = testfile2matrix()
+	# normMat, ranges, minVals = kNN.autoNorm(datingDataMat)
+	# print normMat
+	# print ranges
+	# print minVals
+	# kNN.datingClassTest('../datingTestSet2.txt')
+	kNN.classifyPerson()
