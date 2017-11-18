@@ -22,7 +22,6 @@ def createDataSet():
 # 分类算法
 def classify0 (inX, dataSet, labels, k):
 	dataSetSize = dataSet.shape[0]
-
 	# ---- 开始计算输入点与每一个样本点的欧式距离 -----
 	# print np.tile(inX, (dataSetSize, 1))
 	diffMat = np.tile(inX, (dataSetSize, 1)) - dataSet
@@ -83,11 +82,13 @@ def autoNorm(dataSet):
 	# print np.shape(dataSet)
 	m = dataSet.shape[0]
 	normDataSet = dataSet - np.tile(minVals, (m, 1))
+	# print "--------", type(normDataSet)
+	# print "+++++", type(np.tile(ranges, (m, 1)))
 	normDataSet /= np.tile(ranges, (m, 1))
 	return normDataSet, ranges, minVals
 
 def datingClassTest(filename):
-	hoRatio = 0.10 # 10%的测试数据
+	hoRatio = 0.20 # 10%的测试数据
 	datingDataMat, datingLabels = file2matrix(filename)
 	normMat, ranges, minVals = autoNorm(datingDataMat)
 	m = normMat.shape[0]
@@ -117,4 +118,44 @@ def classifyPerson():
 	inArr = np.array([ffMiles, percentTats, iceCream])
 	classifierResult = classify0((inArr - minVals)/ranges, normMat, datingLabels, 3)
 	print 'You will probably like this person:', resultList[classifierResult - 1]
-	
+
+
+def img2Vector(filename):
+	returnVect = np.zeros((1, 1024))
+	fr = open(filename)
+	for i in range(32):
+		lineStr = fr.readline()
+		for j in range(32):
+			returnVect[0, 32*i + j] = int(lineStr[j])
+	return returnVect
+
+def handwritingClassTest():
+	hwLabels = []
+	# 获取目录的内容
+	trainingFileList = os.listdir("../trainingDigits")
+	m = len(trainingFileList)
+	trainingMat = np.zeros((m, 1024))
+	for i in range(m):
+		# 这里获取的是文件名，如0_0.txt
+		fileNameStr = trainingFileList[i]
+		# 去掉.txt
+		fileStr = fileNameStr.split(".")[0]
+		# 去掉_0,提取文件名第一个数字
+		classNumStr = int(fileStr.split("_")[0])
+		hwLabels.append(classNumStr)
+		trainingMat[i, :] = img2Vector('../trainingDigits/%s' % fileNameStr)
+
+	testFileList = os.listdir("../testDigits")
+	errorCount = 0.0
+	mTest = len(testFileList)
+	for i in range(mTest):
+		fileNameStr = testFileList[i]
+		fileStr = fileNameStr.split(".")[0]
+		classNumStr = int(fileStr.split("_")[0])
+		vectorUnderTest = img2Vector('../testDigits/%s' % fileNameStr)
+		classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+		print "the classifier came back with: %d, the real answer is : %d" % (classifierResult, classNumStr)
+		if classifierResult != classNumStr:
+			errorCount += 1.0
+	print "\nthe total(%d) number of errors is: %d" % (mTest, errorCount)
+	print "\nthe total(%d) error rate is: %0.2f%%" % (mTest, errorCount/float(mTest)*100.0)
