@@ -37,6 +37,7 @@ if __name__ == '__main__':
 	# # print thisDoc
 	# print testEntry, 'classified as:', bayes.classifyNB(thisDoc, p0V, p1V, pAb)
 	result = 0
-	for i in range(50):
+	N = 1.0
+	for i in range(int(N)):
 		result += bayes.spamTest()
-	print result/50.0
+	print result/N

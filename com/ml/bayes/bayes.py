@@ -111,6 +111,8 @@ def spamTest():
 		fullText.extend(wordList)
 		classList.append(0)
 	vocabList = createVocabList(docList)
+	print "vocabList: \n",vocabList
+	print len(vocabList)
 	# 有50个样本
 	trainingSet = range(50); testSet = []
 	# 随机生成10个样本索引
@@ -121,7 +123,9 @@ def spamTest():
 	trainMat = []; trainClasses = []
 	# 构造训练集
 	for docIndex in trainingSet:
-		trainMat.append(bagOfWwords2VecMN(vocabList, docList[docIndex]))
+		indexCounter = bagOfWwords2VecMN(vocabList, docList[docIndex])
+		print indexCounter
+		trainMat.append(indexCounter)
 		trainClasses.append(classList[docIndex])
 	# 进行训练, 得到分类为0中词出现的概率p0，得到分类为1中词出现的概率p1，以及垃圾邮件的概率
 	p0V, p1V, pSpam = trainNB0(np.array(trainMat), np.array(trainClasses))

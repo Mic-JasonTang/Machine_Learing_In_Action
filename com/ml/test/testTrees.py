@@ -6,8 +6,8 @@
 # @File    : testTrees.py
 # @ToDo    : trees.py 的测试
 
-import com.ml.trees as trees
-import com.ml.treePlotter as treePlotter
+import com.ml.tree.trees as trees
+
 
 def testCreateDataSet():
 	myData, labels = trees.createDataSet()
