@@ -28,6 +28,8 @@ def loadDataSet(data_scale="simple"):
     elif data_scale == "large":
         return readfiell("accidents.dat")
 
+# 产生候选集-集合的集合（子集合中都只有一个元素）
+# 相当于将数据集中每个元素封装成集合之后放入到大集合中
 def createC1(dataSet):
     C1 = []
     for transaction in dataSet:
@@ -39,9 +41,10 @@ def createC1(dataSet):
     # print("after sort C1:", C1)
     return map(frozenset, C1)
 
-
+# 筛选满足支持度要求的集合
 def scanD(D, Ck, minSupport):
     ssCnt = {}
+    # 支持度计数
     for tid in D:
         for can in Ck:
             if can.issubset(tid):
@@ -55,12 +58,12 @@ def scanD(D, Ck, minSupport):
     for key in ssCnt:    # 计算支持度
         support = ssCnt[key] / numItems
         if support >= minSupport:
-            retList.insert(0, key)
+            retList.insert(0, key)  # 这里任意插入都可以
         supportData[key] = support
     return retList, supportData
 
 
-# 集合进行合并
+# 集合求并集
 def aprioriGen(Lk, k):
     retList = []
     lenLk = len(Lk)
@@ -69,10 +72,15 @@ def aprioriGen(Lk, k):
         for j in range(i+1, lenLk):
             # print(Lk)
             # print(Lk[i])
-            # print(list(Lk[i]))
-            # list(Lk[i]) 转换为列表
+            # print("list(Lk[i]):", list(Lk[i]))
+            #list(Lk[i]) 转换为列表
+            # 截取集合开始元素相同的集合
             L1 = list(Lk[i])[:k-2]
+            # print("L1---->", L1)
+            # print("Lk[j]):", list(Lk[j]))
             L2 = list(Lk[j])[:k-2]
+            # print("L2---->", L2)
+            # 排序之后，进行合并
             L1.sort(); L2.sort()
             if L1 == L2:
                 retList.append(Lk[i] | Lk[j])
@@ -88,7 +96,9 @@ def apriori(dataSet, minSupport=0.5):
     # print("L:", L)
     k = 2
     while len(L[k - 2]) > 0:  # 当Lk为空时退出
+        # 生成频繁项集
         Ck = aprioriGen(L[k-2], k)   # 从L中生成具有k个元素集合的集合
+        # 挑选满足条件的集合
         Lk, supK = scanD(D, Ck, minSupport)
         supportData.update(supK)
         L.append(Lk)
@@ -96,6 +106,7 @@ def apriori(dataSet, minSupport=0.5):
     return L, supportData
 
 
+# 生成关联规则
 def generateRules(L, supportData, minConf=0.5):
     bigRuleList = []
     for i in range(1, len(L)):
@@ -113,7 +124,7 @@ def calcConf(freqSet, H, supportData, brl, minConf=0.5):
     for conseq in H:
         conf = supportData[freqSet] / supportData[freqSet - conseq]
         if conf >= minConf:
-            print("freqSetL-conseq",freqSet, conseq, ">>>>", freqSet-conseq, "-->", conseq, "conf:", conf)
+            print("freqSetL", freqSet, "conseq", conseq, ">>>>", freqSet-conseq, "-->", conseq, "conf:", conf)
             brl.append((freqSet - conseq, conseq, conf))
             prunedH.append(conseq)
     return prunedH
@@ -129,7 +140,7 @@ def rulesFromConseq(freqSet, H, supportData, brl, minConf=0.7):
 
 
 if __name__ == '__main__':
-    dataSet = loadDataSet("normal")
+    dataSet = loadDataSet("simple")
     minSupport = 0.4
     minConf = 0.5
     # print("dataSet:", dataSet)
