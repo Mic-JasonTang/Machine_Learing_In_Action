@@ -8,7 +8,7 @@
 
 import os
 import numpy as np
-import com.ml.kNN as kNN
+import kNN as kNN
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
@@ -17,8 +17,8 @@ mpl.rcParams['axes.unicode_minus'] = False
 
 def testCreateDataSet(show = False):
 	group, labels = kNN.createDataSet()
-	print "group=\n", group
-	print "labels=\n", labels
+	print("group=\n", group)
+	print("labels=\n", labels)
 
 	if show:
 		x = group[:, 0]
@@ -40,8 +40,8 @@ def testClassify0(inX, dataSet, labels):
 
 def testfile2matrix():
 	datingDataMat, datingLabels = kNN.file2matrix(r'../datingTestSet2.txt')
-	print datingDataMat
-	print datingLabels
+	print(datingDataMat)
+	print(datingLabels)
 	plt.figure(figsize=(6,10))
 	plt.subplot(211)
 	plt.scatter(datingDataMat[:, 0], datingDataMat[:, 1], 50.0* np.array(datingLabels), np.array(datingLabels))
@@ -55,7 +55,7 @@ def testfile2matrix():
 	return datingDataMat, datingLabels
 
 def testImg2Vector():
-	return kNN.img2Vector("../testDigits/0_13.txt")
+	return kNN.img2Vector("testDigits/0_13.txt")
 
 if __name__ == '__main__':
 	# group, labels = testCreateDataSet(True)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 	# print normMat
 	# print ranges
 	# print minVals
-	kNN.datingClassTest('../datingTestSet2.txt')
+	# kNN.datingClassTest('../datingTestSet2.txt')
 	# kNN.classifyPerson()
 
 	# testVector = testImg2Vector()
@@ -84,4 +84,4 @@ if __name__ == '__main__':
 	# 		plt.scatter(arr[i][0], arr[i][j], 15*i*j)
 	# plt.show()
 
-	# kNN.handwritingClassTest()
+	kNN.handwritingClassTest()

@@ -87,7 +87,7 @@ def majorityCnt(classList):
 	for vote in classList:
 		if vote not in classCount.keys(): classCount[vote] = 0
 		classCount[vote] += 1
-	sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(1), reverse=True)
+	sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
 	return sortedClassCount[0][0]
 
 # 创建树的函数（ID3算法）
@@ -148,9 +148,9 @@ def grabTree(filename):
 	return pickle.load(fr)
 
 def glasses():
-	fr = open('../lenses.txt')
+	fr = open('lenses.txt')
 	lenses = [inst.strip().split('\t') for inst in fr.readlines()]
 	lensesLabels = ['age', 'prescript', 'astigmatic', 'tearRate']
 	lensesTree = createTree(lenses, lensesLabels)
-	print lensesTree
+	print(lensesTree)
 	treePlotter.createPlot(lensesTree)

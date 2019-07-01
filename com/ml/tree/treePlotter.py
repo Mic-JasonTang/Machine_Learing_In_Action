@@ -42,7 +42,7 @@ def createPlot(inTree):
 # 获取叶子节点数量
 def getNumLeafs(myTree):
 	numLeafs = 0
-	firstStr = myTree.keys()[0]
+	firstStr = list(myTree.keys())[0]
 	secondDict = myTree[firstStr]
 	for key in secondDict.keys():
 		if type(secondDict[key]).__name__ == 'dict':
@@ -54,7 +54,7 @@ def getNumLeafs(myTree):
 # 获取树的层数
 def getTreeDepth(myTree):
 	maxDepth = 0
-	firstStr = myTree.keys()[0]
+	firstStr = list(myTree.keys())[0]
 	secondDict = myTree[firstStr]
 	# print 'secondDict:', secondDict
 	for key in secondDict.keys():
@@ -65,7 +65,7 @@ def getTreeDepth(myTree):
 		if thisDepth > maxDepth: maxDepth = thisDepth
 	return maxDepth
 
-# 存储了书的结构
+# 存储了树的结构
 def retrieveTree(i):
 	listOfTrees = [{'no surfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}},
 				   {'no surfacing': {0: 'no', 1: {'flippers': {0: {'head': {0: 'no', 1: 'yes'}}, 1: 'no'}}}}]
@@ -82,7 +82,7 @@ def plotTree(myTree, parentPt, nodeTxt):
 	# 计算宽与高
 	numLeafs = getNumLeafs(myTree)
 	depth = getTreeDepth(myTree)
-	firstStr = myTree.keys()[0]
+	firstStr = list(myTree.keys())[0]
 	cntrPt = (plotTree.xOff + (1.0 + float(numLeafs))/2.0/plotTree.totalW, plotTree.yOff)
 	# 标记子节点属性值
 	plotMidText(cntrPt, parentPt, nodeTxt)

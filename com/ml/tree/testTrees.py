@@ -6,7 +6,7 @@
 # @File    : testTrees.py
 # @ToDo    : trees.py 的测试
 
-import com.ml.tree.trees as trees
+import trees as trees
 
 
 def testCreateDataSet():
@@ -18,12 +18,12 @@ def testCreateDataSet():
 
 def testCalcShannonEnt(dataSet):
 	shannonEnt = trees.calcShannonEnt(dataSet)
-	print shannonEnt
+	print(shannonEnt)
 	return shannonEnt
 
 def testChooseBestFeatureToSplit(dataSet):
 	# print dataSet
-	print trees.chooseBestFeatureToSplit(dataSet)
+	print(trees.chooseBestFeatureToSplit(dataSet))
 
 if __name__ == '__main__':
 	# myData, labels = testCreateDataSet()
