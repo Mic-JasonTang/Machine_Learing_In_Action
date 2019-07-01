@@ -1,7 +1,6 @@
 #!/user/bin/python
 # -*- coding:utf -8 -*-
 
-from numpy import *
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -11,32 +10,32 @@ def loadDataSet(fileName):
     fr = open(fileName)
     for line in fr.readlines():
         curLine = line.strip().split('\t')
-        fltLine = map(float, curLine)
+        fltLine = list(map(float, curLine))
         dataMat.append(fltLine)
-    return mat(dataMat)
+    return np.mat(dataMat)
 
 def distEclud(vecA, vecB):
-    return sqrt(sum(power(vecA - vecB, 2)))
+    return np.sqrt(np.sum(np.power(vecA - vecB, 2)))
 
 def randCent(dataSet, k):
-    n = shape(dataSet)[1]
-    centroids = mat(zeros((k,n)))
+    n = np.shape(dataSet)[1]
+    centroids = np.mat(np.zeros((k,n)))
     for j in range(n):
         minJ = min(dataSet[:,j])
         rangeJ = float(max(dataSet[:,j]) - minJ)
-        centroids[:,j] = minJ + rangeJ * random.rand(k,1)
+        centroids[:,j] = minJ + rangeJ * np.random.rand(k,1)
     return centroids
 
 #K-均值聚类算法
 def kMeans2(dataSet, k, distMeas=distEclud, createCent=randCent):
-    m = shape(dataSet)[0]
-    clusterAssment = mat(zeros((m,2)))
+    m = np.shape(dataSet)[0]
+    clusterAssment = np.mat(np.zeros((m,2)))
     centroids = createCent(dataSet, k)
     clusterChanged = True
     while clusterChanged:
         clusterChanged = False
         for i in range(m):
-            minDist = inf
+            minDist = np.inf
             minIndex = -1
             for j in range(k):
                 distJI = distMeas(centroids[j,:1], dataSet[i,:])
@@ -48,8 +47,8 @@ def kMeans2(dataSet, k, distMeas=distEclud, createCent=randCent):
                 clusterAssment[i,:] = minIndex, minDist ** 2
         # print centroids
         for cent in range(k):
-            ptsInClust = dataSet[nonzero(clusterAssment[:,0].A == cent)[0]]
-            centroids[cent,:] = mean(ptsInClust, axis=0)
+            ptsInClust = dataSet[np.nonzero(clusterAssment[:,0].A == cent)[0]]
+            centroids[cent,:] = np.mean(ptsInClust, axis=0)
     return centroids, clusterAssment
 
 # k-means算法，distMeas为计算距离的函数，creatCent为生成质心的函数
@@ -87,16 +86,16 @@ def kMeans(dataSet, k, distMeas=distEclud, createCent=randCent):
 
 
 def showCluster(dataSet, k, clusterAssment, centroids):
-    print dataSet.shape
+    print(dataSet.shape)
     fig = plt.figure()
     plt.title("K-means")
     ax = fig.add_subplot(111)
     data = []
     for cent in range(k): #提取出每个簇的数据
-        ptsInClust = dataSet[nonzero(clusterAssment[:,0].A==cent)[0]] #获得属于cent簇的数据
+        ptsInClust = dataSet[np.nonzero(clusterAssment[:,0].A==cent)[0]] #获得属于cent簇的数据
         data.append(ptsInClust)
     for cent, c, marker in zip( range(k), ['r', 'g', 'b', 'y'], ['^', 'o', '*', 's'] ): #画出数据点散点图
-        print data[cent][:, 0], data[cent][:, 1]
+        print(data[cent][:, 0], data[cent][:, 1])
         ax.scatter(data[cent][:, 0].tolist(), data[cent][:, 1].tolist(), s=80, c=c, marker=marker)
     ax.scatter(centroids[:, 0].tolist(), centroids[:, 1].tolist(), s=1000, c='black', marker='+', alpha=1) #画出质心点
     ax.set_xlabel('X Label')
@@ -104,8 +103,8 @@ def showCluster(dataSet, k, clusterAssment, centroids):
     plt.show()
 
 
-dataSet = loadDataSet('./k-means_data/testSet.txt')
-datMat = mat(dataSet)
+dataSet = loadDataSet('k-means_data/testSet.txt')
+datMat = np.mat(dataSet)
 # print '最小值:'
 # print min(datMat[:,0])
 # print min(datMat[:,1])

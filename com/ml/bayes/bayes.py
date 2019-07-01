@@ -34,7 +34,7 @@ def setOfWords2Vect(vocabList, inputSet):
 		if word in vocabList:
 			returnVec[vocabList.index(word)] = 1 # 表示VocabList中的单词在inputSet中是否出现
 		else:
-			print 'the word: %s is not in my Vocabulary!' % word
+			print('the word: %s is not in my Vocabulary!' % word)
 	return returnVec
 
 # 词袋模型
@@ -102,19 +102,19 @@ def spamTest():
 	classList = []
 	fullText = []
 	for i in range(1, 26):
-		wordList = textParse(open('email/spam/%d.txt' % i).read())
+		wordList = textParse(open('email/spam/%d.txt' % i, encoding="ISO-8859-1").read())
 		docList.append(wordList)
 		fullText.extend(wordList)
 		classList.append(1)
-		wordList = textParse(open('email/ham/%d.txt' % i).read())
+		wordList = textParse(open('email/ham/%d.txt' % i, encoding="ISO-8859-1").read())
 		docList.append(wordList)
 		fullText.extend(wordList)
 		classList.append(0)
 	vocabList = createVocabList(docList)
-	print "vocabList: \n",vocabList
-	print len(vocabList)
+	print("vocabList: \n",vocabList)
+	print(len(vocabList))
 	# 有50个样本
-	trainingSet = range(50); testSet = []
+	trainingSet = list(range(50)); testSet = []
 	# 随机生成10个样本索引
 	for i in range(10):
 		randIndex = int(random.uniform(0, len(trainingSet)))
@@ -124,7 +124,7 @@ def spamTest():
 	# 构造训练集
 	for docIndex in trainingSet:
 		indexCounter = bagOfWwords2VecMN(vocabList, docList[docIndex])
-		print indexCounter
+		print(indexCounter)
 		trainMat.append(indexCounter)
 		trainClasses.append(classList[docIndex])
 	# 进行训练, 得到分类为0中词出现的概率p0，得到分类为1中词出现的概率p1，以及垃圾邮件的概率
@@ -136,7 +136,7 @@ def spamTest():
 		wordVector = bagOfWwords2VecMN(vocabList, docList[docIndex])
 		if classifyNB(wordVector, p0V, p1V, pSpam) != classList[docIndex]:
 			errorCount +=1
-			print docIndex
+			print(docIndex)
 	p_result = float(errorCount)/len(testSet)
-	print 'the error rate is:', p_result
+	print('the error rate is:', p_result)
 	return p_result

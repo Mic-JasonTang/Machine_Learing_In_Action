@@ -40,4 +40,4 @@ if __name__ == '__main__':
 	N = 1.0
 	for i in range(int(N)):
 		result += bayes.spamTest()
-	print result/N
+	print(result/N)

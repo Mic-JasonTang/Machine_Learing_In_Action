@@ -48,7 +48,7 @@ def scanD(D, Ck, minSupport):
     for tid in D:
         for can in Ck:
             if can.issubset(tid):
-                if not ssCnt.has_key(can):
+                if not can in ssCnt:
                     ssCnt[can] = 1
                 else:
                     ssCnt[can] += 1
@@ -89,7 +89,7 @@ def aprioriGen(Lk, k):
 
 def apriori(dataSet, minSupport=0.5):
     C1 = createC1(dataSet)  # 产生只有1个元素的集合的集合作为候选集
-    D = map(set, dataSet)
+    D = list(map(set, dataSet))
     L1, supportData = scanD(D, C1, minSupport)  # L1是从C1中挑选满足支持度的集合
     L = [L1]  # 转换为列表, L1为一维列表,元素为集合
     # print("L:", np.shape(L))

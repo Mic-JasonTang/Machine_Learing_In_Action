@@ -40,7 +40,7 @@ def gradAscent(dataMatIn, classLabels):
 	dataMat = np.mat(dataMatIn)
 	labelMat = np.mat(classLabels).transpose() # 将标签转置为列向量
 	m, n = np.shape(dataMat)
-	print dataMat.shape
+	print(dataMat.shape)
 	alpha = 0.001 # 步长
 	maxCycles = 500 # 迭代次数
 	weights = np.ones((n, 1)) # 3x1的矩阵
@@ -78,7 +78,7 @@ def stocGradAscent0(dataMatrix, classLabels, numIter=150):
 	# alpha = 0.01
 	weights = np.ones(n)
 	for j in range(numIter):
-		dataIndex = range(m)
+		dataIndex = list(range(m))
 		for i in range(m):
 			alpha = 4/(1.0+j+i) + 0.01 # 每次都需要调整alpha,不断减小。
 			randIndex = int(np.random.uniform(0, len(dataIndex))) # 进行随机更新
@@ -119,11 +119,11 @@ def colicTest():
 		if int(classifyVector(np.array(lineArr), trainWeights)) != int(currLine[21]):
 			errorCount += 1
 	errorRate = (float(errorCount)/numTestVec)
-	print 'the error rate of this test is %f' % errorRate
+	print('the error rate of this test is %f' % errorRate)
 	return errorRate
 
 def multiTest():
 	numTests = 10; errorSum = 0.0
-	for k in range(numTests):
+	for _ in range(numTests):
 		errorSum += colicTest()
-	print 'after %d iterations the average error rate is %f' % (numTests, errorSum/float(numTests))
+	print('after %d iterations the average error rate is %f' % (numTests, errorSum/float(numTests)))
